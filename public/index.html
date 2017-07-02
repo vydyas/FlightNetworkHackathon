@@ -1,144 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Flight Network | Hackathon</title>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="bower_components/materialize/dist/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="bower_components/angular-ranger/angular-ranger.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Theme CSS -->
-    <link href="css/clean-blog.min.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="https://blackrockdigital.github.io/startbootstrap-clean-blog/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+  <style>
+      .icon-block {
+        padding: 0 15px;
+      }
+      .icon-block .material-icons {
+        font-size: inherit;
+      }
+      .card .card-content .card-title {
+    display: block;
+    line-height: 32px;
+    margin-bottom: 8px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    }
+    .line {
+      width: 400px;
+      height:10px;
+      background: #3f555f;
+    }
+    .loadingchip { 
+    display: inline-block;
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+    line-height: 32px;
+    padding: 0 12px;
+    border-radius: 16px;
+    background-color: #e4e4e4;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    }
+  </style>
 </head>
-
 <body ng-app="siddhu" ng-controller="mainController as mc">
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo">
+      Flight Network
+      </a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="http://www.siddhu.info" target="_blank">{{mc.hello}} | Portfolio</a></li>
+      </ul>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="#">MEAN Blog</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#">Home</a>
-                    </li>
-                    <li>
-                        <a href="#!/about">About</a>
-                    </li>
-                     <li ng-show="!login">
-                        <a href="#!/admin">Login/Signup</a>
-                    </li>
-                    <li ng-show="login"><a href="#!/new">New Article</a></li>
-                    <li ng-show="login"><a href="#!/articles">Articles</a></li>
-                    <li ng-show="login"><a href="#" ng-click="mc.logout()">logout</a></li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url('img/home-bg.jpg')">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="site-heading">
-                        <h1>RapidBizApps</h1>
-                        <hr class="small">
-                        <span class="subheading" ng-show="login">NodeJS,Express,Angular & Mongo Blog by {{data.userData.name}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="container">
-         <div ng-view></div>  
+      <ul id="nav-mobile" class="side-nav">
+        <li><a href="#">Portfolio</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a> 
     </div>
-
-    <hr>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                        <li>
-                            <a href="https://www.linkedin.com/in/siddhucse" target="_blank">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://facebook.com/siddhucse" target="_blank">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://github.com/vydyas" target="_blank">
-                                <span class="fa-stack fa-lg">
-                                    <i class="fa fa-circle fa-stack-2x"></i>
-                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-muted">Copyright &copy; <a href="http://siddhu.info">Siddhu Vydyabhushana</a></p>
-                </div>
-            </div>
+  </nav>
+  <div class="container">
+    <div class="section">
+  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="icon_prefix" type="text" class="validate" ng-model="search.movie_title">
+          <label for="icon_prefix">Search By Name</label>
         </div>
-    </footer>
+        <div class="input-field col s6">
+          <div class="fixed-action-btn horizontal">
+    <a class="btn-floating btn-large red">
+      <i class="large material-icons">settings_input_composite</i>
+    </a>
+    <ul>
+      <li>
+        <a class="btn-floating red" ng-click="mc.isReverse = false">
+        <i class="material-icons">call_received</i>
+        </a>
+        </li>
+      <li><a class="btn-floating yellow darken-1" ng-click="mc.isReverse = true"><i class="material-icons">call_made</i></a></li>
 
-    <!-- Theme JavaScript -->
-    <script src="bower_components/angular/angular.min.js"></script>
-    <script src="bower_components/angular-route/angular-route.min.js"></script>
-    <script src="js/script.js"></script>
-    <script src="controllers/auth/signupController.js"></script>
-    <script src="controllers/auth/loginController.js"></script>
-    <script src="controllers/article/articleController.js"></script>
-    <script src="controllers/home/homeController.js"></script>
-    <script src="controllers/home/singleController.js"></script>
-    <script src="controllers/home/ownController.js"></script>
-    <script src="controllers/home/editController.js"></script>
-    <script src="services/postService.js"></script>
-  
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/trix/0.9.2/trix.js"></script>
-</body>
+    </ul>
+  </div>
+        </div>
+      </div>
+    </form>
+  </div>
+      <div class="row" ng-show="!mc.loading" >
+        <div class="col s12 m12" ng-repeat="list in mc.movieList | filter:search:strict | orderBy:'title_year':mc.isReverse">
+          <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+              <span class="card-title" title={{list.movie_title}}>
+                <h3>{{list.movie_title}}</h3>
+                </span>
+              <p style="float:right">
+                <b>Language: </b> {{list.language}}<br/>
+                <b>Content Rating: </b> {{list.content_rating}}
+              </p>
+              <p>
+                <b>Actor 1:</b> {{list.actor_1_name}}
+              </p>
+              <p>
+                <b>Actor 2:</b> {{list.actor_2_name}}
+              </p>
+              <p>
+                <b>Budget:</b> {{list.budget}}
+              </p>
+              <p>
+                <b>Director Name:</b> {{list.director_name}}
+              </p>
+               <h5>Genre</h5>
+              <div class="chip" ng-repeat="genre in list.genres.split('|')">
+                {{genre}}
+              </div>
+              <h5>Plots</h5>
+              <div class="chip" ng-repeat="chip in list.plot_keywords.split('|')">
+                {{chip}}
+              </div>
+            </div>
+            
+            <div class="card-action">
+              <a>{{list.title_year}}</a>
+              <a href={{list.movie_imdb_link}} target="_blank">IMDB Link</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
+    </div>
+    <br><br>
+  </div>
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="bower_components/materialize/dist/js/materialize.js"></script>
+  <script src="js/init.js"></script>
+  <script src="bower_components/materialize/js/modal.js"></script>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+  <script src="services/postService.js"></script>
+  <script src="js/script.js"></script>
+  <script src="bower_components/angular-ranger/angular-ranger.min.js"></script>
+  <script>
+    $(document).ready(function(){
+    // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+      $('.btn').click(function(){
+        $('#modal1').modal('open');
+      });
+     });
+  </script>
+  </body>
 </html>

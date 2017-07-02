@@ -1,0 +1,164 @@
+'use strict';
+
+angular.module('angular-ranger',[])
+.directive('angularRanger', ['$window', function($window){
+	return {
+		restrict: 'E',
+		replace: true,
+		templateUrl: 'angular-ranger.html',
+		scope:{
+			min: '@',
+			max: '@',
+			step: '@',
+			minValue: '=?',
+			maxValue: '=?',
+			value: '=?'
+		},
+		link: function(scope, el, attrs){
+			// Private Variables
+			//================================
+			var scale = el[0].querySelector('.ranger-scale'),
+				markers = {
+					min: angular.element(scale.children[0]),
+					max: angular.element(scale.children[2])
+				},
+				fill = angular.element(scale.children[1]),
+				range = Math.abs(scope.min - scope.max),
+				maxPx = scale.clientWidth,
+				step = parseFloat(scope.step) || 1,
+				currentX = {min: 0, max: scale.clientWidth},
+				singleValue = scope.minValue == null,
+				moveX = null,
+				moveTarget = null,
+				disabled = false,
+				rAFIndex = null;
+
+			// Public Variables
+			//================================
+			if(singleValue)
+				markers.min.css('display', 'none');
+
+			// Private Methods
+			//================================
+			function getClosestMarker(x){
+				if(singleValue) return 'max';
+				var fromMin = Math.abs(x-currentX.min);
+				var fromMax = Math.abs(x-currentX.max);
+				if(fromMin == fromMax) return x<currentX.min ? 'min' : 'max';
+				return fromMin<fromMax ? 'min' : 'max';
+			}
+			function updateRange(newValue, oldValue){
+				range = Math.abs(scope.min - scope.max);
+				updatePositionWithValue();
+			}
+			function updateStep(newValue, oldValue){
+				step = parseFloat(newValue || 1);
+			}
+			function updateDisabled(newValue, oldValue){
+				disabled = newValue !== false || newValue !== 'false';
+			}
+			function getNearestStep(){
+				var percentage = moveX / maxPx;
+				var value = (percentage * range) + parseFloat(scope.min);
+				return Math.round(value/step) * step;
+			}
+			function snapToNearestStep(){
+				var value = getNearestStep();
+				scope[moveTarget+'Value'] = value;
+				if(singleValue) scope.value = value;
+				currentX[moveTarget] = (Math.abs(scope.min - value)/range) * scale.clientWidth;
+				scope.$apply();
+			}
+			function setValidPosition(){
+				if(moveTarget == 'min' && moveX > currentX.max) moveX = currentX.max;
+				if(moveTarget == 'min' && moveX < 0) moveX = 0;
+				if(moveTarget == 'max' && moveX < currentX.min) moveX = currentX.min;
+				if(moveTarget == 'max' && moveX > maxPx) moveX = maxPx;
+			}
+			function updatePositionWithX() {
+				if (!moveX) return;
+				setValidPosition();
+
+				currentX[moveTarget] = moveX;
+				markers[moveTarget].attr('marker-value', getNearestStep());
+				updatePosition();
+			}
+			function updatePosition(){
+				if(moveTarget == null || markers[moveTarget] == null) return;
+				markers[moveTarget].css('left', currentX[moveTarget]+'px');
+				if(moveTarget == 'min'){
+					fill.css('left', currentX.min+'px');
+				}else{
+					fill.css('right', (maxPx - currentX.max)+'px');
+				}
+			}
+			function updatePositionPercentage(){
+				var percentages = {
+					min: (Math.abs(singleValue? 0 : scope.min - scope.minValue)/range)*100,
+					max: (Math.abs(scope.min - (singleValue? scope.value : scope.maxValue))/range)*100
+				};
+				markers.min.css('left', percentages.min+'%');
+				markers.max.css('left', percentages.max+'%');
+				fill.css({
+					'left': percentages.min+'%',
+					'right': (100-percentages.max)+'%'
+				});
+			}
+			function updatePositionWithValue() {
+				updateLimits();
+				updatePositionPercentage();
+			}
+			function updateLimits(){
+				maxPx = scale.clientWidth;
+				var minValue = scope.minValue || scope.min || 0;
+				var maxValue = scope.maxValue || scope.max || 0;
+				if(scope.max < (singleValue? scope.value : scope.maxValue)) scope[singleValue? 'value' : 'maxValue'] = scope.max;
+				if(scope.min > (singleValue? scope.value : scope.minValue)) scope[singleValue? 'value' : 'minValue'] = scope.min;
+				currentX.min = (Math.abs(scope.min - minValue)/range) * scale.clientWidth;
+				currentX.max = (Math.abs(scope.min - maxValue)/range) * scale.clientWidth;
+			}
+
+			// Watchers
+			//================================
+			angular.element($window).bind('resize', function () {
+				updateLimits();
+				updatePosition();
+				scope.$apply();
+			});
+			scope.$watch('min', updateRange);
+			scope.$watch('max', updateRange);
+			scope.$watch('minValue', updatePositionWithValue);
+			scope.$watch('maxValue', updatePositionWithValue);
+			scope.$watch('value', updatePositionWithValue);
+			scope.$watch('step', updateStep);
+			attrs.$observe('disabled', updateDisabled)
+
+			// Click/Drag Bindings
+			//================================
+			PointerDraw(
+				scale,
+				function (target, pointerId, x, y, e) { // mousedown
+					if(disabled) return;
+					if (maxPx < 1) updateLimits(); //Set limits if range was previously collapsed
+					moveTarget = getClosestMarker(x);
+					markers[moveTarget][0].focus();
+					moveX = x;
+					updatePositionWithX();
+				},
+				function (target, pointerId, x, y, e) { // mousemove
+					if(disabled) return;
+					moveX = x;
+					cancelAnimationFrame(rAFIndex);
+					rAFIndex = requestAnimationFrame(updatePositionWithX);
+				},
+				function (target, pointerId, e) { // mouseup
+					if(disabled) return;
+					markers[moveTarget][0].blur();
+					setValidPosition();
+					snapToNearestStep();
+					cancelAnimationFrame(rAFIndex);
+				}
+			);
+		}
+	};
+}]);

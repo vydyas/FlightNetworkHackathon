@@ -1,0 +1,35 @@
+{
+  "name": "angular-ranger",
+  "version": "0.2.1",
+  "description": "A mobile friendly, super-fast, range slider. He's the hero Your App deserves...",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/justmaier/angular-ranger.git"
+  },
+  "keywords": [
+    "angular"
+  ],
+  "author": "Justin Maier <just.maier@gmail.com> (http://justinmaier.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/justmaier/angular-ranger/issues"
+  },
+  "homepage": "https://github.com/justmaier/angular-ranger",
+  "devDependencies": {
+    "del": "^1.1.0",
+    "gulp": "*",
+    "gulp-angular-templatecache": "^1.8.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-livereload": "^3.8.0",
+    "gulp-plumber": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.1.0",
+    "gulp-uglify": "^1.5.1",
+    "gulp-uglifycss": "^1.0.5"
+  }
+}

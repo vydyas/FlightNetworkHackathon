@@ -4,7 +4,7 @@
   "description": "Nodejs Project setup using npm, Angular setup using bower to create setup project",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine"
   },
   "author": "",
   "license": "ISC",
@@ -13,5 +13,8 @@
     "express": "^4.14.1",
     "express-session": "^1.15.1",
     "mongoose": "^4.8.5"
+  },
+  "devDependencies": {
+    "jasmine": "^2.6.0"
   }
 }

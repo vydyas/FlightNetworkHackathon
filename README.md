@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # NodeJs-Mongo-Angular-Blog
 How to create a blog application using Node JS, Mongo DB, Angular and Express frameworks.
 
@@ -11,3 +12,7 @@ npm install
 
 # Linkedin Profile
 https://www.linkedin.com/in/siddhucse
+=======
+# FlightNetworkHackathon
+Nodejs setup base project along with angular.
+>>>>>>> 317b7deff4cd45f112ecec62e819517873dfb203
